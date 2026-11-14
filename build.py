@@ -25,9 +25,26 @@ patch('M.default.createElement("button",{className:u(a.view==="home"),onClick:()
 patch(',c=Qe.default.useCallback(m=>{Ms(m),e(m),o("revealing")},[])',
       ',__rt=(window.__rt={startBrief:m=>f({client:m,n:Date.now()})}),c=Qe.default.useCallback(m=>{Ms(m),e(m),o("revealing")},[])')
 
+# 4. Homepage: new hero copy, the OS sections mounted in place of the brief-only ones, the orb kept small near the footer.
+patch('"Drop in a brief. Get the plan, the gaps and the next move."', '"Run the agency on one thread."')
+patch('"The agency\'s operating system for briefs, from the first client email to every team\'s task list."',
+      '"Every brief, pitch, estimate, meeting, report and renewal at TSL in one place. It drafts the work, remembers every client and keeps the money in view."')
+ORB0 = 'j.default.createElement("section",{className:"mx-auto flex max-w-[1080px] flex-col items-center px-6 pb-16 pt-4"}'
+WHAT0 = ',j.default.createElement("section",{className:"mx-auto max-w-[1080px] border-t border-[#f3f2ef]/10 px-6 py-16 sm:px-10"},j.default.createElement("h2",{className:"display text-[26px] sm:text-[32px]"},"What Red Thread does")'
+CTA0 = ',j.default.createElement("section",{className:"mx-auto flex max-w-[1080px] flex-col items-start gap-5'
+FOOT0 = ',j.default.createElement("footer",{className:"px-5 pb-6 text-[11.5px]'
+a, b, c, d = t.index(ORB0), t.index(WHAT0), t.index(CTA0), t.index(FOOT0)
+assert a < b < c < d and t.count(ORB0) == 1 and t.count(WHAT0) == 1
+orb = t[a:b].replace('style:{height:"min(380px, 42vh)"}', 'style:{height:"min(190px, 24vh)"}').replace('px-6 pb-16 pt-4"', 'px-6 pb-10 pt-10 border-t border-[#f3f2ef]/10"')
+cta = t[c:d]
+t = t[:a] + 'j.default.createElement("div",{id:"rt-land"})' + cta + ',' + orb + t[d:]
+patch('"For the ",Ft.name," team. Sign in with your work email."', '"For everyone at ",Ft.short,". Sign in with your work email."')
+patch('"Built for the whole ",Ft.short," team."', '"Built for every desk at ",Ft.short,"."')
+patch('"Sign up with your work email. Your department decides which briefs and tasks land on your dashboard."', '"Sign up with your work email. Your department decides what lands on your dashboard."')
+patch('"Prototype \\xB7 ",Ft.name', '"Test build \\xB7 ",Ft.name')
 head = '<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="os.css">'
 patch('<title>Red Thread</title>', '<title>Red Thread</title>' + head)
-scripts = ''.join(f'<script src="{f}"></script>' for f in ['os-data.js', 'os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js'])
+scripts = ''.join(f'<script src="{f}"></script>' for f in ['os-data.js', 'os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js', 'os-landing.js'])
 i = t.rindex('</body>')
 t = t[:i] + scripts + t[i:]
 (D / 'index.html').write_text(t, encoding='utf8')
@@ -41,7 +58,7 @@ assert len(faces) >= 5, len(faces)
 roster = json.loads((R / 'src/roster.json').read_text())
 logo = json.loads((R / 'src/logo.json').read_text())
 (D / 'os-data.js').write_text('window.RT_DATA=' + json.dumps({'roster': roster, 'logo': logo}, separators=(',', ':')) + ';', encoding='utf8')
-for f in ['os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js', 'os.css']:
+for f in ['os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js', 'os-landing.js', 'os.css']:
     shutil.copy(R / 'os' / f, D / f)
 
 shutil.rmtree(D / 'lib', ignore_errors=True)
