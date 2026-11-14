@@ -1,0 +1,618 @@
+[
+{
+"name": "Aadish",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Cellucor",
+"Orangetheory Fitness",
+"Cosco"
+]
+},
+{
+"name": "Aaresh",
+"department": "Media",
+"designation": "Senior Executive",
+"brands": [
+"Spunge",
+"Cellucor",
+"Inkspired.ai",
+"Sunvik Steel"
+]
+},
+{
+"name": "Abhishek",
+"department": "Tech",
+"designation": "Executive",
+"brands": [
+"Spunge",
+"Bombased",
+"BILS",
+"Sunvik Steel"
+]
+},
+{
+"name": "Adishree",
+"department": "Copy",
+"designation": "Intern",
+"brands": [
+"Ryan"
+]
+},
+{
+"name": "Afzal",
+"department": "Art Motion Graphic",
+"designation": "Associate Manager",
+"brands": [
+"Peru Tourism",
+"Amazon Seller",
+"Standard Chartered",
+"Spunge",
+"Mogu Mogu",
+"Alka",
+"Cellucor",
+"Saridon"
+]
+},
+{
+"name": "Ananya",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Mogu Mogu"
+]
+},
+{
+"name": "Anisha",
+"department": "Art Static",
+"designation": "Director",
+"brands": [
+"Peru Tourism",
+"Amazon Seller",
+"Standard Chartered",
+"Spunge",
+"Cellucor"
+]
+},
+{
+"name": "Anoushka",
+"department": "Copy",
+"designation": "Senior Executive",
+"brands": [
+"Standard Chartered",
+"Mogu Mogu"
+]
+},
+{
+"name": "Ansh",
+"department": "Account Management",
+"designation": "Senior Executive",
+"brands": [
+"Amazon Seller",
+"Bhor"
+]
+},
+{
+"name": "Anupam",
+"department": "Media",
+"designation": "Manager",
+"brands": [
+"Peru Tourism",
+"Mogu Mogu",
+"Inkspired.ai",
+"Dextrus",
+"NCPA",
+"Sudhir Shivaram",
+"Mustard",
+"Sunvik Steel"
+]
+},
+{
+"name": "Armaan",
+"department": "Copy",
+"designation": "Controller",
+"brands": [
+"Peru Tourism",
+"Amazon Seller",
+"Standard Chartered",
+"Spunge",
+"Mogu Mogu",
+"Alka",
+"Cellucor",
+"Saridon",
+"Ryan",
+"Dextrus",
+"Croffle Guys",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Arsh",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Spunge",
+"Saridon",
+"NCPA",
+"TSL"
+]
+},
+{
+"name": "Batul",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Peru Tourism",
+"Amazon Seller",
+"Croffle Guys",
+"Anemos",
+"Buildwell",
+"Whiteoak Capital"
+]
+},
+{
+"name": "Calvin",
+"department": "Copy",
+"designation": "Senior Executive",
+"brands": [
+"Saridon"
+]
+},
+{
+"name": "Chirayu",
+"department": "Art Static",
+"designation": "Senior Executive",
+"brands": [
+"Standard Chartered",
+"Spunge",
+"Cellucor",
+"NCPA",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Deeya",
+"department": "Art Static",
+"designation": "Executive",
+"brands": [
+"Ryan",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Devhuti",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Amazon Seller",
+"Cellucor",
+"Ryan",
+"Irth"
+]
+},
+{
+"name": "Dhwani",
+"department": "Copy",
+"designation": "Senior Executive",
+"brands": [
+"Amazon Seller",
+"Dextrus"
+]
+},
+{
+"name": "Divya",
+"department": "Media",
+"designation": "Senior Executive",
+"brands": [
+"Peru Tourism",
+"Dextrus",
+"Cosco",
+"Frootroot",
+"Mustard"
+]
+},
+{
+"name": "Fahad",
+"department": "Tech",
+"designation": "Executive",
+"brands": [
+"Magari Homes",
+"AJ",
+"Buildwell"
+]
+},
+{
+"name": "Harshad",
+"department": "Art Static",
+"designation": "Executive",
+"brands": [
+"Amazon Seller",
+"Alka",
+"NCPA"
+]
+},
+{
+"name": "Heeransh",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"NCPA",
+"Bombased",
+"Ace Logistics"
+]
+},
+{
+"name": "Jash",
+"department": "Copy",
+"designation": "Senior Executive",
+"brands": [
+"Cellucor",
+"Ryan",
+"Croffle Guys",
+"Orangetheory Fitness",
+"Sunteck",
+"BILS"
+]
+},
+{
+"name": "Karan",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Peru Tourism",
+"Mogu Mogu",
+"Inkspired.ai",
+"SA Tourism",
+"Bhor"
+]
+},
+{
+"name": "Khushi",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Spunge",
+"Shobha Shingar",
+"Annam",
+"Sunvik Steel"
+]
+},
+{
+"name": "Kush",
+"department": "Art Static",
+"designation": "Intern",
+"brands": [
+"Ryan"
+]
+},
+{
+"name": "Mrinalini",
+"department": "Art Static",
+"designation": "Executive",
+"brands": [
+"Mogu Mogu",
+"Dextrus"
+]
+},
+{
+"name": "Nandini",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Mogu Mogu",
+"Alka",
+"Inkspired.ai",
+"Dextrus",
+"TSL"
+]
+},
+{
+"name": "Naqiya",
+"department": "Art Static",
+"designation": "Senior Executive",
+"brands": [
+"Amazon Seller",
+"Alka",
+"Saridon",
+"Dextrus"
+]
+},
+{
+"name": "Nigel",
+"department": "Copy",
+"designation": "Senior Executive",
+"brands": [
+"Spunge",
+"Alka"
+]
+},
+{
+"name": "Nupur",
+"department": "Account Management",
+"designation": "Senior Executive",
+"brands": [
+"Spunge",
+"Chemistry",
+"Irth"
+]
+},
+{
+"name": "Pratik",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Standard Chartered",
+"Sudhir Shivaram",
+"Sunvik Steel"
+]
+},
+{
+"name": "Priyanka",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Amazon Seller",
+"Croffle Guys",
+"Orangetheory Fitness",
+"SA Tourism"
+]
+},
+{
+"name": "Puneet",
+"department": "Account Management",
+"designation": "Associate Director",
+"brands": [
+"Chemistry"
+]
+},
+{
+"name": "RajLaxmi",
+"department": "Copy",
+"designation": "Executive",
+"brands": [
+"Amazon Seller",
+"Dextrus"
+]
+},
+{
+"name": "Rayyan",
+"department": "Tech",
+"designation": "Associate Manager",
+"brands": [
+"Spunge",
+"Bhor"
+]
+},
+{
+"name": "Rhea",
+"department": "Art Motion Graphic",
+"designation": "Executive",
+"brands": [
+"Standard Chartered",
+"Inkspired.ai",
+"Saridon",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Rishabh",
+"department": "Media",
+"designation": "Executive",
+"brands": [
+"Mogu Mogu",
+"Croffle Guys",
+"Chemistry",
+"Anemos",
+"Buildwell"
+]
+},
+{
+"name": "Ritika",
+"department": "Copy",
+"designation": "Executive",
+"brands": [
+"Amazon Seller",
+"Cellucor"
+]
+},
+{
+"name": "Ritwik",
+"department": "Account Management",
+"designation": "Senior Executive",
+"brands": [
+"Standard Chartered",
+"Alka",
+"Inkspired.ai",
+"Dextrus"
+]
+},
+{
+"name": "Rohit",
+"department": "Art Static",
+"designation": "Manager",
+"brands": [
+"Amazon Seller",
+"Spunge",
+"Ryan",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Rukshar",
+"department": "Copy",
+"designation": "Intern",
+"brands": [
+"Ryan"
+]
+},
+{
+"name": "Sahiel",
+"department": "Media",
+"designation": "Executive",
+"brands": [
+"Cellucor",
+"Orangetheory Fitness",
+"Shobha Shingar",
+"Bombased"
+]
+},
+{
+"name": "Shayan",
+"department": "Copy",
+"designation": "Executive",
+"brands": [
+"Saridon",
+"Croffle Guys"
+]
+},
+{
+"name": "Shrishti",
+"department": "Copy",
+"designation": "Associate Manager",
+"brands": [
+"Peru Tourism",
+"Amazon Seller",
+"Spunge",
+"Mogu Mogu",
+"Alka",
+"Cellucor",
+"Dextrus",
+"Croffle Guys",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Shruti",
+"department": "Art Static",
+"designation": "Senior Executive",
+"brands": [
+"Spunge",
+"Inkspired.ai"
+]
+},
+{
+"name": "Siddhesh",
+"department": "Account Management",
+"designation": "Manager",
+"brands": [
+"Alka",
+"Big Rock",
+"Bombased"
+]
+},
+{
+"name": "Siddhi",
+"department": "Copy",
+"designation": "Executive",
+"brands": [
+"Peru Tourism",
+"Spunge",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Sneha",
+"department": "Copy",
+"designation": "Associate Manager",
+"brands": [
+"Alka",
+"Cellucor",
+"Saridon",
+"Ryan",
+"Dextrus",
+"Orangetheory Fitness"
+]
+},
+{
+"name": "Sohail",
+"department": "Account Management",
+"designation": "Associate Director",
+"brands": [
+"Neve Jewels",
+"Peru Tourism",
+"SA Tourism"
+]
+},
+{
+"name": "Sushant",
+"department": "Media",
+"designation": "Senior Executive",
+"brands": [
+"NCPA",
+"Chemistry",
+"Shobha Shingar",
+"Bombased",
+"Sudhir Shivaram"
+]
+},
+{
+"name": "Swasti",
+"department": "Copy",
+"designation": "Executive",
+"brands": [
+"Peru Tourism",
+"Standard Chartered",
+"Mogu Mogu",
+"Alka"
+]
+},
+{
+"name": "Urja",
+"department": "Art Static",
+"designation": "Manager",
+"brands": [
+"Peru Tourism",
+"Standard Chartered",
+"Mogu Mogu",
+"Alka",
+"Cellucor",
+"Inkspired.ai",
+"Saridon"
+]
+},
+{
+"name": "Vedant",
+"department": "Art Motion Graphic",
+"designation": "Executive",
+"brands": [
+"Mogu Mogu",
+"Ryan"
+]
+},
+{
+"name": "Vinit",
+"department": "Media",
+"designation": "Manager",
+"brands": [
+"Spunge",
+"Cellucor",
+"Chemistry",
+"Orangetheory Fitness",
+"Cosco",
+"Frootroot"
+]
+},
+{
+"name": "Viral",
+"department": "Account Management",
+"designation": "Senior Executive",
+"brands": [
+"Neve Jewels",
+"Saridon",
+"Big Rock",
+"AJ",
+"Sunvik Steel"
+]
+},
+{
+"name": "Vishaka",
+"department": "Account Management",
+"designation": "Executive",
+"brands": [
+"Magari Homes",
+"Saridon",
+"AJ",
+"Mustard"
+]
+}
+]
