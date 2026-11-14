@@ -46,7 +46,7 @@ async def main():
                 await pg.wait_for_timeout(350); await pg.screenshot(path=str(ROOT / f'shots/{name}-{tag}.png'))
             await shot('home')
             # horizontal overflow check on every route
-            for r in ['os', 'os-m-brief', 'os-m-pitch', 'os-m-commercial', 'os-m-meeting', 'os-m-delivery', 'os-m-make', 'os-m-proof', 'os-m-growth', 'os-brain', 'os-clients', 'os-c-mogu-mogu', 'os-tasks', 'os-pilot', 'os-setup', 'os-t-mom', 'os-t-rehearsal', 'os-t-brief-decode', 'os-t-prototype']:
+            for r in ['os', 'os-m-brief', 'os-m-pitch', 'os-m-commercial', 'os-m-meeting', 'os-m-delivery', 'os-m-make', 'os-m-proof', 'os-m-growth', 'os-brain', 'os-clients', 'os-c-mogu-mogu', 'os-tasks', 'os-pilot', 'os-setup', 'os-t-mom', 'os-t-rehearsal', 'os-t-brief-decode', 'os-t-prototype', 'os-founder']:
                 await pg.evaluate(f"location.hash='{r}'"); await pg.wait_for_timeout(300)
                 ov = await pg.evaluate("(()=>{const m=document.querySelector('.rt-main');return [m.scrollWidth-m.clientWidth, document.querySelector('.rt-page').innerText.length]})()")
                 if ov[0] > 2 or ov[1] < 40: print('  CHECK', r, ov)
@@ -109,6 +109,22 @@ async def main():
                 print('  saved files:', await pg.evaluate('window.__saved'))
                 print('  mcp calls:', await pg.evaluate('(window.__calls||[]).map(c=>c[1])'))
                 print('  store sizes:', await pg.evaluate('Object.fromEntries(Object.entries(window.__store).map(([k,v])=>[k,Object.keys(v).length]))'))
+                # founder view
+                await pg.evaluate("location.hash='os-founder'"); await pg.wait_for_timeout(400)
+                await pg.click('button:has-text("Enter retainers")'); await pg.fill('.rt-modal textarea', 'Mogu Mogu, 500000, 2027-01-10\nSA Tourism, 120000\nNew Brand Co, 90000\nbad line'); await pg.click('.rt-modal-f .primary'); await pg.wait_for_timeout(300)
+                await pg.click('button:has-text("Set allocations")'); await pg.wait_for_timeout(200); await pg.fill('.rt-modal input[type=number] >> nth=0', '60'); await pg.click('.rt-modal-f .primary'); await pg.wait_for_timeout(200); await pg.click('.rt-modal .rt-x'); await pg.wait_for_timeout(300)
+                await pg.evaluate("RT.S.c.signals=[{id:'mogu-mogu-2026-W46',client:'mogu-mogu',week:'2026-W46',tone:-1.5,escalation:true,revisionRounds:4,replyHours:30}]")
+                await pg.evaluate("location.hash='os-tasks'"); await pg.wait_for_timeout(100); await pg.evaluate("location.hash='os-founder'"); await pg.wait_for_timeout(400)
+                await pg.screenshot(path=str(ROOT / 'shots/desk-founder.png'), full_page=False)
+                await pg.evaluate("document.querySelector('.rt-main').scrollTop=700"); await pg.wait_for_timeout(200); await pg.screenshot(path=str(ROOT / 'shots/desk-founder2.png'))
+                print('  health:', await pg.evaluate("JSON.stringify(RT.health(RT.client('mogu-mogu')))")); print('  founder text:', (await pg.evaluate("document.querySelector('.rt-page').innerText"))[:900].replace('\n',' | '))
+                await pg.click('button:has-text("Draft the estimate")'); await pg.wait_for_timeout(500)
+                print('  prefill:', await pg.evaluate("[location.hash, document.querySelector('.rt-run-l select').value, document.querySelector('.rt-mat').value.slice(0,60)]"))
+                await pg.click('.rt-run-l .rt-btn.primary'); await pg.wait_for_timeout(500)
+                print('  estimate flag:', await pg.evaluate("Object.values(window.__store.os_scope).map(s=>s.estimateDrafted||null)"))
+                await pg.evaluate("location.hash='os-founder'"); await pg.wait_for_timeout(300); await pg.click('button:has-text("Absorb")'); await pg.fill('.rt-modal textarea', 'Goodwill'); await pg.click('.rt-modal-f .primary'); await pg.wait_for_timeout(300)
+                print('  absorbed:', await pg.evaluate("Object.values(window.__store.os_scope).map(s=>[s.status,s.absorbReason])"))
+                await pg.evaluate("location.hash='os'"); await pg.wait_for_timeout(300); print('  home needs:', await pg.evaluate("document.querySelector('.rt-needs')?.innerText"))
                 # the brief flow underneath
                 await pg.evaluate("location.hash='briefs'"); await pg.wait_for_timeout(700); await shot('briefs')
                 print('  modules button in brief flow:', await pg.evaluate("[...document.querySelectorAll('button')].some(b=>b.textContent==='All modules')"))

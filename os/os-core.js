@@ -41,8 +41,8 @@
   RT.myBrands = () => { const f = (S.me?.name || '').split(/\s+/)[0].toLowerCase(); const r = DATA.roster.filter((p) => p.name.toLowerCase() === f); return r.length === 1 ? r[0].brands : []; };
 
   /* ---------- data store ---------- */
-  const COLS = { clients: 'clients', briefs: 'briefs', members: 'members', profiles: 'os_clients', runs: 'os_runs', brain: 'os_brain', rules: 'os_rules', promises: 'os_promises', scope: 'os_scope', tasks: 'os_tasks', pipeline: 'os_pipeline', effort: 'os_effort', settings: 'os_settings' };
-  const OWN = ['profiles', 'runs', 'brain', 'rules', 'promises', 'scope', 'tasks', 'pipeline', 'effort', 'settings'];
+  const COLS = { clients: 'clients', briefs: 'briefs', members: 'members', profiles: 'os_clients', runs: 'os_runs', brain: 'os_brain', rules: 'os_rules', promises: 'os_promises', scope: 'os_scope', tasks: 'os_tasks', pipeline: 'os_pipeline', effort: 'os_effort', settings: 'os_settings', alloc: 'os_alloc', signals: 'os_signals', agent: 'os_agent' };
+  const OWN = ['profiles', 'runs', 'brain', 'rules', 'promises', 'scope', 'tasks', 'pipeline', 'effort', 'settings', 'alloc', 'signals', 'agent'];
   Object.keys(COLS).forEach((k) => (S.c[k] = []));
   const listeners = new Set();
   RT.onChange = (fn) => listeners.add(fn);

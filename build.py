@@ -27,7 +27,7 @@ patch(',c=Qe.default.useCallback(m=>{Ms(m),e(m),o("revealing")},[])',
 
 head = '<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="os.css">'
 patch('<title>Red Thread</title>', '<title>Red Thread</title>' + head)
-scripts = ''.join(f'<script src="{f}"></script>' for f in ['os-data.js', 'os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js'])
+scripts = ''.join(f'<script src="{f}"></script>' for f in ['os-data.js', 'os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js'])
 i = t.rindex('</body>')
 t = t[:i] + scripts + t[i:]
 (D / 'index.html').write_text(t, encoding='utf8')
@@ -41,7 +41,7 @@ assert len(faces) >= 5, len(faces)
 roster = json.loads((R / 'src/roster.json').read_text())
 logo = json.loads((R / 'src/logo.json').read_text())
 (D / 'os-data.js').write_text('window.RT_DATA=' + json.dumps({'roster': roster, 'logo': logo}, separators=(',', ':')) + ';', encoding='utf8')
-for f in ['os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os.css']:
+for f in ['os-tools.js', 'os-core.js', 'os-ui.js', 'os-pages.js', 'os-founder.js', 'os.css']:
     shutil.copy(R / 'os' / f, D / f)
 
 shutil.rmtree(D / 'lib', ignore_errors=True)

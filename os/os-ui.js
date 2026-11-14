@@ -65,11 +65,11 @@
     const x = location.hash.slice(1);
     if (x === 'os') return { v: 'home' };
     const m = x.match(/^os-(m|t|c)-(.+)$/); if (m) return { v: { m: 'module', t: 'tool', c: 'client' }[m[1]], id: m[2] };
-    const p = x.match(/^os-(brain|clients|tasks|pilot|setup)$/); if (p) return { v: p[1] };
+    const p = x.match(/^os-(brain|clients|tasks|pilot|setup|founder)$/); if (p) return { v: p[1] };
     return null;
   };
   const NAV = () => [
-    ['os', 'Home'], ...CFG.MODULES.map((m) => ['os-m-' + m.id, m.name, m.n]), null,
+    ['os', 'Home'], RT.can() && ['os-founder', 'Founder view'], ...CFG.MODULES.map((m) => ['os-m-' + m.id, m.name, m.n]), null,
     ['os-brain', 'Agency Brain'], ['os-clients', 'Clients'], ['os-tasks', 'Tasks'], RT.can() && ['os-pilot', 'Pilot scorecard'], ['os-setup', 'Setup'],
   ];
   const build = () => {
@@ -127,6 +127,7 @@
       myTasks.length && [myTasks.length, myTasks.length === 1 ? 'task is open for you' : 'tasks are open for you', 'os-tasks'],
       due.length && [due.length, due.length === 1 ? 'promise is due this week' : 'promises are due this week', 'os-m-meeting'],
       RT.can() && wait.length && [wait.length, wait.length === 1 ? 'client ask is waiting for approval' : 'client asks are waiting for approval', 'os-m-commercial'],
+      RT.can() && RT.health && (() => { const n = RT.clients().filter((c) => c.id !== 'tsl' && RT.health(c).band === 'red').length; return n && [n, n === 1 ? 'account is red on client health' : 'accounts are red on client health', 'os-founder']; })(),
       renew.length && [renew.length, renew.length === 1 ? 'contract is in its renewal window' : 'contracts are in their renewal window', 'os-m-growth'],
     ].filter(Boolean);
     const index = h('div', { class: 'rt-index' });
@@ -268,6 +269,7 @@
         state.raw = raw; show(raw, false);
         const c = cl();
         state.run = RT.put('runs', { id: changeReq && state.run ? state.run.id : undefined, tool: t.id, mod: t.mod, title: title(), client: c?.id || '', clientName: c?.name || '', output: RT.clip(raw, 45000), inputs: Object.fromEntries(Object.entries(v).filter(([k]) => k !== 'material')), materialChars: (v.material || '').length, minutes: state.run?.minutes || 0 });
+        if (state.scopeId) RT.patch('scope', state.scopeId, { estimateRun: state.run.id, estimateDrafted: RT.today() });
         paintBar();
       } catch (e) { out.innerHTML = `<p class="rt-note">${esc(RT.aiError(e))}</p>` + (e?.text ? RT.mdHtml(e.text) : ''); }
       finally { state.busy = false; runBtn.disabled = false; stopBtn.hidden = true; }
@@ -284,6 +286,7 @@
       return h('div', {}, back, head(null, t.name, t.blurb), h('div', { class: 'rt-run' }, h('div', { class: 'rt-run-l' }, fields, using), h('div', { class: 'rt-run-r' }, chat)));
     }
     empty();
+    if (RT.prefill && RT.prefill.tool === t.id) { const pf = RT.prefill; RT.prefill = null; state.scopeId = pf.scopeId; setTimeout(() => { if (ins.client && pf.client) { if (![...ins.client.options].some((o) => o.value === pf.client)) ins.client.append(h('option', { value: pf.client }, RT.client(pf.client)?.name || pf.client)); ins.client.value = pf.client; } if (ins.material && pf.material) ins.material.value = pf.material; refreshUsing(); }, 0); }
     if (RT.openRun) { const r = RT.rows('runs').find((x) => x.id === RT.openRun); RT.openRun = null; if (r && r.tool === t.id) setTimeout(() => openRun(r), 0); }
     setTimeout(refreshUsing, 0);
     return h('div', {}, back, head(null, t.name, null),

@@ -178,3 +178,7 @@ strong .rt-pill{margin-left:8px}
   .rt-tool .go{display:none}
   .rt-btn{height:40px}
 }
+
+/* founder view */
+.rt-kpi.warn strong{color:rgb(var(--thread))}.rt-pill.amber{background:rgb(var(--inferred-tint));color:rgb(var(--inferred))}
+.rt-how{margin-top:40px;color:rgb(var(--ink-2));font-size:14px}.rt-how summary{cursor:pointer;font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:rgb(var(--ink-3))}.rt-how ul{margin-top:12px}
