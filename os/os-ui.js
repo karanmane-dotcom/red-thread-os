@@ -74,24 +74,36 @@
   ];
   const build = () => {
     pageEl = h('div', { class: 'rt-page' });
-    const side = h('aside', { class: 'rt-side' });
-    layer = h('div', { id: 'rtos', hidden: true },
-      h('header', { class: 'rt-top' }, h('a', { href: '#os', 'aria-label': 'Red Thread home' }, logo(22)), h('button', { class: 'rt-menu', 'aria-label': 'Menu', onclick: () => layer.classList.toggle('nav-open') }, 'Menu')),
-      side, h('main', { class: 'rt-main', onclick: () => layer.classList.remove('nav-open') }, pageEl), h('div', { id: 'rt-toasts' }));
+    let tone = 'dark'; try { tone = localStorage.getItem('redthread.os.tone') || 'dark'; } catch {}
+    layer = h('div', { id: 'rtos', hidden: true, 'data-tone': tone },
+      h('header', { class: 'rt-top' },
+        h('a', { href: '#os', class: 'rt-brand', 'aria-label': 'Red Thread home' }, logo(24)),
+        h('button', { class: 'rt-cmd-open', type: 'button', onclick: () => RT.palette() }, h('span', { class: 'k' }, navigator.platform?.includes('Mac') ? '⌘K' : 'Ctrl K'), h('span', {}, 'Tell Red Thread what you need')),
+        h('div', { class: 'rt-top-r' }, h('span', { class: 'rt-crumb' }), h('button', { class: 'rt-menu', type: 'button', 'aria-label': 'Open the index', onclick: () => layer.classList.toggle('nav-open') }, h('i'), h('i'), h('span', {}, 'Index')))),
+      h('div', { class: 'rt-side', role: 'dialog', 'aria-label': 'Index' }),
+      h('main', { class: 'rt-main' }, pageEl), h('div', { id: 'rt-toasts' }));
     document.body.append(layer);
+    addEventListener('keydown', (e) => { if (layer.hidden) return; if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); RT.palette(); } if (e.key === 'Escape') layer.classList.remove('nav-open'); });
   };
+  RT.tone = (t) => { layer.setAttribute('data-tone', t); try { localStorage.setItem('redthread.os.tone', t); } catch {} };
   const paintNav = () => {
     const side = layer.querySelector('.rt-side'), cur = location.hash.slice(1), me = S.me || {};
     const curMod = route.v === 'tool' ? 'os-m-' + (tool(route.id)?.mod || '') : route.v === 'client' ? 'os-clients' : cur;
-    RT.fill(side, 
-      h('a', { href: '#os', class: 'rt-brand', 'aria-label': 'Red Thread home' }, logo(30)),
-      h('nav', {}, NAV().map((n) => n === null ? h('hr') : n && h('a', { href: '#' + n[0], class: curMod === n[0] ? 'on' : '', onclick: () => layer.classList.remove('nav-open') }, n[2] && h('span', { class: 'n' }, n[2]), n[1]))),
-      h('div', { class: 'rt-me' },
-        h('a', { href: '#briefs', class: 'rt-link', onclick: () => layer.classList.remove('nav-open') }, 'Briefs and brief tasks'),
-        h('div', { class: 'who' }, h('strong', {}, me.name || ''), h('span', {}, [me.designation, me.department].filter(Boolean).join(', '))),
-        h('div', { class: 'row' }, h('button', { class: 'rt-link', onclick: () => { const d = document.documentElement, dark = getComputedStyle(d).colorScheme.includes('dark') || d.getAttribute('data-theme') === 'dark'; const t = dark ? 'light' : 'dark'; d.setAttribute('data-theme', t); try { localStorage.setItem('redthread.theme', t); } catch {} } }, 'Light / dark'),
-          h('button', { class: 'rt-link', onclick: () => { try { localStorage.removeItem('redthread.session.v1'); } catch {} location.hash = ''; location.reload(); } }, 'Log out')),
-        h('div', { class: 'rt-status' }, S.live ? 'Live. Shared with the team.' : S.ready ? 'Not syncing. Data stays in this browser.' : 'Connecting')));
+    const close = () => layer.classList.remove('nav-open');
+    const crumb = layer.querySelector('.rt-crumb'), m = CFG.MODULES.find((x) => 'os-m-' + x.id === curMod);
+    crumb.textContent = route.v === 'home' ? '' : m ? `${m.n} ${m.name}` : (NAV().find((n) => n && n[0] === curMod) || [])[1] || '';
+    RT.fill(side,
+      h('div', { class: 'rt-ix' },
+        h('nav', { class: 'rt-ix-mods' }, h('div', { class: 'rt-mono' }, 'Modules'), CFG.MODULES.map((x) => h('a', { href: '#os-m-' + x.id, class: curMod === 'os-m-' + x.id ? 'on' : '', onclick: close }, h('span', { class: 'n' }, x.n), h('span', { class: 't' }, x.name)))),
+        h('nav', { class: 'rt-ix-more' }, h('div', { class: 'rt-mono' }, 'Workspace'),
+          NAV().filter((n) => n && !String(n[0]).startsWith('os-m-')).map((n) => h('a', { href: '#' + n[0], class: curMod === n[0] ? 'on' : '', onclick: close }, n[1])),
+          h('a', { href: '#briefs', onclick: close }, 'Briefs and brief tasks')),
+        h('div', { class: 'rt-me' },
+          h('div', { class: 'who' }, h('strong', {}, me.name || ''), h('span', {}, [me.designation, me.department].filter(Boolean).join(', '))),
+          h('div', { class: 'row' }, h('button', { class: 'rt-link', onclick: () => RT.tone(layer.getAttribute('data-tone') === 'dark' ? 'light' : 'dark') }, 'Light / dark'),
+            h('button', { class: 'rt-link', onclick: () => { try { localStorage.removeItem('redthread.session.v1'); } catch {} location.hash = ''; location.reload(); } }, 'Log out')),
+          h('div', { class: 'rt-status' }, S.live ? 'Live. Shared with the team.' : S.ready ? 'Not syncing. Data stays in this browser.' : 'Connecting'))),
+      h('button', { class: 'rt-ix-close', 'aria-label': 'Close the index', onclick: close }, 'Close'));
   };
   let raf = 0;
   const render = (RT.render = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
@@ -115,6 +127,43 @@
   const boot = () => { build(); addEventListener('hashchange', sync); if (RT.session() && !location.hash.slice(1)) go('os'); sync(); };
   document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', boot) : boot();
 
+  /* ---------- command: one line to reach any tool, module, client or page ---------- */
+  const SYN = { mom: 'minutes meeting call notes', minutes: 'meeting mom', call: 'voicenote notes transcript', voicenote: 'call notes transcript', quote: 'cost proposal estimate', cost: 'proposal estimate', estimate: 'cost proposal ce email', price: 'ask scope rate card', invoice: 'proof service po', po: 'proof service', deck: 'slides presentation pitch', slides: 'deck', pitch: 'deck factory routes', idea: 'creative routes', ideas: 'creative routes', report: 'monthly reporting', contract: 'agreement addendum dpa msa review', sow: 'scope proposal', timeline: 'gantt engagement', gantt: 'timeline', calendar: 'social content', website: 'prototype site page', site: 'prototype website', email: 'reply draft gmail', mail: 'reply draft gmail', inbox: 'daily brief', lead: 'tag pipeline', leads: 'tag pipeline', renewal: 'renewal case upsell', feedback: 'revisions twin', brief: 'decode questionnaire vendor', rehearse: 'rehearsal pitch', case: 'case study', send: 'email reply draft', write: 'draft', review: 'qa check' };
+  RT.command = (q) => {
+    const words = String(q).toLowerCase().match(/[a-z0-9]+/g) || []; if (!words.length) return [];
+    const want = words.flatMap((w) => [w, ...(SYN[w] || '').split(' ').filter(Boolean)]);
+    const score = (hay, base = 0) => { hay = hay.toLowerCase(); let s = base; want.forEach((w, i) => { if (w.length > 2 && hay.includes(w)) s += i < words.length ? 3 : 1; }); return s; };
+    const nameFit = (n) => { const t = n.toLowerCase().match(/[a-z]+/g).filter((w) => w.length > 2); return t.every((w) => want.includes(w)) && t.some((w) => words.includes(w)) ? 6 : 0; };
+    const items = [
+      ...CFG.TOOLS.filter((t) => !t.gated || RT.can()).map((t) => ({ kind: 'Tool', label: t.name, sub: CFG.MODULES.find((m) => m.id === t.mod).name, hash: 'os-t-' + t.id, tool: t, s: score(t.name + ' ' + t.name + ' ' + t.blurb) + nameFit(t.name) })),
+      ...CFG.MODULES.map((m) => ({ kind: 'Module', label: m.name, sub: m.line, hash: 'os-m-' + m.id, s: score(m.name + ' ' + m.line) })),
+      ...RT.clients().map((c) => ({ kind: 'Client', label: c.name, sub: c.agency || '', hash: 'os-c-' + c.id, s: score(c.name, words.some((w) => c.name.toLowerCase().startsWith(w)) ? 4 : 0) })),
+      ...NAV().filter((n) => n && !String(n[0]).startsWith('os-m-')).map((n) => ({ kind: 'Page', label: n[1], sub: '', hash: n[0], s: score(n[1]) })),
+    ];
+    return items.filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 7);
+  };
+  const runCommand = (q, pick) => {
+    const top = pick || RT.command(q)[0]; if (!top) { RT.toast('Nothing matches that yet. Try minutes, proposal, deck or a client name.'); return; }
+    if (top.kind === 'Tool' && q.trim().split(/\s+/).length > 6) { const c = RT.command(q).find((x) => x.kind === 'Client'); RT.prefill = { tool: top.tool.id, client: c ? c.hash.slice(5) : '', material: q.trim() }; }
+    go(top.hash);
+  };
+  const cmdBox = (big) => {
+    const list = h('div', { class: 'rt-cmd-list' }), inp = h('input', { class: 'rt-search' + (big ? ' big' : ''), type: 'search', placeholder: 'Tell Red Thread what you need', 'aria-label': 'Tell Red Thread what you need', autocomplete: 'off' });
+    let sel = 0, hits = [];
+    const paint = () => { hits = RT.command(inp.value); sel = Math.min(sel, Math.max(0, hits.length - 1)); RT.fill(list, hits.map((x, i) => h('a', { href: '#' + x.hash, class: 'rt-cmd-row' + (i === sel ? ' on' : ''), onclick: (e) => { e.preventDefault(); runCommand(inp.value, x); RT.closePalette?.(); } }, h('span', { class: 'k' }, x.kind), h('span', { class: 'l' }, x.label), h('span', { class: 's' }, x.sub)))); };
+    inp.addEventListener('input', () => { sel = 0; paint(); });
+    inp.addEventListener('keydown', (e) => { if (e.key === 'ArrowDown') { e.preventDefault(); sel = Math.min(hits.length - 1, sel + 1); paint(); } if (e.key === 'ArrowUp') { e.preventDefault(); sel = Math.max(0, sel - 1); paint(); } if (e.key === 'Enter') { e.preventDefault(); runCommand(inp.value, hits[sel]); RT.closePalette?.(); } });
+    return { inp, list, el: h('div', { class: 'rt-cmd' + (big ? ' big' : '') }, inp, list) };
+  };
+  RT.palette = () => {
+    if (layer.querySelector('.rt-pal')) return;
+    const c = cmdBox(true);
+    const wrap = h('div', { class: 'rt-pal', onmousedown: (e) => e.target === wrap && close() }, h('div', { class: 'rt-pal-in' }, h('div', { class: 'rt-mono' }, 'Ask for a tool, a module, a client or a page. Paste a whole request and it opens the right tool with it filled in.'), c.el));
+    const close = (RT.closePalette = () => { wrap.remove(); RT.closePalette = null; });
+    wrap.addEventListener('keydown', (e) => e.key === 'Escape' && close());
+    layer.append(wrap); setTimeout(() => c.inp.focus(), 20);
+  };
+
   /* ---------- home ---------- */
   V.home = () => {
     const me = S.me, first = (me.name || '').split(/\s+/)[0], hr = new Date().getHours();
@@ -130,22 +179,26 @@
       RT.can() && RT.health && (() => { const n = RT.clients().filter((c) => c.id !== 'tsl' && RT.health(c).band === 'red').length; return n && [n, n === 1 ? 'account is red on client health' : 'accounts are red on client health', 'os-founder']; })(),
       renew.length && [renew.length, renew.length === 1 ? 'contract is in its renewal window' : 'contracts are in their renewal window', 'os-m-growth'],
     ].filter(Boolean);
-    const index = h('div', { class: 'rt-index' });
-    const paint = (q) => {
-      q = q.trim().toLowerCase();
-      if (q) { const hits = CFG.TOOLS.filter((t) => (t.name + ' ' + t.blurb).toLowerCase().includes(q)); RT.fill(index, hits.length ? hits.map((t) => toolRow(t, true)) : h('p', { class: 'rt-empty' }, 'No tool matches that. Try a word like minutes, proposal, deck or report.')); return; }
-      RT.fill(index, CFG.MODULES.map((m) => h('div', { class: 'rt-mod' }, h('a', { href: '#os-m-' + m.id, class: 'rt-mod-n' }, m.n), h('div', {}, h('a', { href: '#os-m-' + m.id, class: 'rt-mod-name' }, m.name), h('p', {}, m.line), h('div', { class: 'rt-mod-tools' }, CFG.TOOLS.filter((t) => t.mod === m.id && (!t.gated || RT.can())).map((t) => link(t.special === 'brief' ? 'os-t-' + t.id : 'os-t-' + t.id, t.name, 'rt-chip')))))));
-    };
-    paint('');
-    const recent = RT.rows('runs').filter((r) => r.by === me.name).slice(0, 6);
-    return h('div', {},
-      head(new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }), `Good ${hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening'}, ${first}.`, null),
-      h('input', { class: 'rt-search', type: 'search', placeholder: 'What do you need to do? Try minutes, proposal, deck, report.', 'aria-label': 'Find a tool', oninput: (e) => paint(e.target.value) }),
-      needs.length ? h('div', { class: 'rt-needs' }, needs.map((n) => h('a', { href: '#' + n[2] }, h('strong', {}, n[0]), h('span', {}, n[1])))) : null,
-      index,
-      recent.length ? section('Your recent work', table([{ h: 'What', f: (r) => r.title }, { h: 'Client', f: (r) => r.clientName || '' }, { h: 'When', f: (r) => RT.day(r.at), w: '120px' }], recent, { onRow: (r) => { RT.openRun = r.id; go('os-t-' + r.tool); } })) : null);
+    const cmd = cmdBox(true);
+    const recentTools = [...new Set(RT.rows('runs').filter((r) => r.by === me.name).map((r) => r.tool))].slice(0, 4).map(tool).filter(Boolean);
+    const quick = (recentTools.length ? recentTools : ['mom', 'pitch-factory', 'cost-proposal', 'deck-qa'].map(tool)).filter((t) => t && (!t.gated || RT.can()));
+    const ring = h('nav', { class: 'rt-ring', 'aria-label': 'Modules' }, CFG.MODULES.map((m, i) => h('a', { href: '#os-m-' + m.id, style: (() => { const t = ((i / CFG.MODULES.length) * 360 - 90) * Math.PI / 180; return { left: (50 + 47 * Math.cos(t)).toFixed(2) + '%', top: (50 + 47 * Math.sin(t)).toFixed(2) + '%' }; })(), onmouseenter: () => RT.orb?.pulse(), title: m.line }, h('span', { class: 'n' }, m.n), h('span', { class: 't' }, m.name))));
+    const orbHost = h('div', { class: 'rt-orb-host' });
+    setTimeout(() => RT.orb?.mount(orbHost), 0);
+    const recent = RT.rows('runs').filter((r) => r.by === me.name).slice(0, 5);
+    return h('div', { class: 'rt-home' },
+      h('div', { class: 'rt-deck' },
+        h('div', { class: 'rt-deck-c' }, ring, orbHost),
+        h('div', { class: 'rt-deck-t' },
+          h('div', { class: 'rt-mono' }, new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })),
+          h('h1', {}, `Good ${hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening'}, ${first}.`),
+          needs.length ? h('p', { class: 'rt-needs' }, needs.map((n, i) => [i ? h('span', { class: 'sep' }, ' · ') : null, h('a', { href: '#' + n[2] }, h('strong', {}, n[0]), ' ' + n[1])])) : h('p', { class: 'rt-needs quiet' }, 'Nothing is waiting on you right now.'),
+          cmd.el,
+          h('p', { class: 'rt-quick' }, h('span', { class: 'rt-mono' }, recentTools.length ? 'Pick up' : 'Start with'), quick.map((t) => h('a', { href: '#os-t-' + t.id }, t.name))))),
+      RT.loom ? RT.loom() : null,
+      recent.length ? section('Your recent work', table([{ h: 'What', f: (r) => h('strong', {}, r.title) }, { h: 'Client', f: (r) => r.clientName || '' }, { h: 'When', f: (r) => RT.day(r.at), w: '120px' }], recent, { onRow: (r) => { RT.openRun = r.id; go('os-t-' + r.tool); } })) : null);
   };
-  const toolRow = (t, showMod) => (!t.gated || RT.can()) && h('a', { href: '#os-t-' + t.id, class: 'rt-tool' }, h('div', {}, h('strong', {}, t.name), showMod && h('span', { class: 'rt-mono' }, CFG.MODULES.find((m) => m.id === t.mod).name), h('p', {}, t.blurb)), h('span', { class: 'go' }, 'Open'));
+  const toolRow = (t, showMod) => (!t.gated || RT.can()) && h('a', { href: '#os-t-' + t.id, class: 'rt-tool' }, h('div', {}, h('strong', {}, t.name), showMod && h('span', { class: 'rt-mono' }, CFG.MODULES.find((m) => m.id === t.mod).name), h('p', {}, t.blurb)), h('span', { class: 'go' }, '→'));
 
   /* ---------- module page ---------- */
   V.module = (id) => {
@@ -262,7 +315,7 @@
       for (const f of t.fields || []) if (f.req && !v[f.k]) { RT.toast(`Fill in "${f.label}" first.`); ins[f.k].focus(); return; }
       const p = RT.prompt(t, v, v.material);
       const input = changeReq && state.raw ? [{ role: 'user', content: p.text }, { role: 'assistant', content: state.raw }, { role: 'user', content: `Change request: ${changeReq}\nReturn the full revised document${t.acts?.length ? ', followed by the json block again' : ''}.` }] : p.text;
-      state.busy = true; state.ctrl = new AbortController(); runBtn.disabled = true; stopBtn.hidden = false; RT.fill(bar, ); out.innerHTML = '<p class="rt-cursor">Reading the material</p>';
+      state.busy = true; RT.orb?.state('working'); state.ctrl = new AbortController(); runBtn.disabled = true; stopBtn.hidden = false; RT.fill(bar, ); out.innerHTML = '<p class="rt-cursor">Reading the material</p>';
       let last = 0;
       try {
         const raw = await RT.ask(input, { tier: t.tier, signal: state.ctrl.signal, images: state.images, onText: (txt) => { const now = Date.now(); if (now - last > 120) { last = now; show(txt, true); } } });
@@ -272,7 +325,7 @@
         if (state.scopeId) RT.patch('scope', state.scopeId, { estimateRun: state.run.id, estimateDrafted: RT.today() });
         paintBar();
       } catch (e) { out.innerHTML = `<p class="rt-note">${esc(RT.aiError(e))}</p>` + (e?.text ? RT.mdHtml(e.text) : ''); }
-      finally { state.busy = false; runBtn.disabled = false; stopBtn.hidden = true; }
+      finally { state.busy = false; RT.orb?.state('idle'); runBtn.disabled = false; stopBtn.hidden = true; }
     };
 
     // open a saved run

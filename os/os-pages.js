@@ -63,6 +63,7 @@
   };
 
   let tab = 'twin';
+  RT.clientTab = (t) => (tab = t);
   V.client = (id) => {
     const c = RT.client(id); if (!c) return h('div', {}, h('a', { href: '#os-clients', class: 'rt-back' }, 'Clients'), h('p', { class: 'rt-empty' }, 'This client was not found.'));
     const can = RT.can(), tabs = [['twin', 'Client Twin'], ['promises', 'Promise Ledger'], ['scope', 'Scope Ledger'], can && ['pl', 'Account P&L'], ['profile', 'Profile'], ['history', 'History']].filter(Boolean);
